@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script><!-- jQuery library -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+<script src="https://www.gstatic.com/charts/loader.js"></script><!-- Google Chart -->
+
+<script src="myScript.js"></script>
+<link rel="stylesheet" href="myStyle.css">
+<body>    
+	<header>
+		<nav class="navbar navbar-default">
+		    <div class="container-fluid">
+			    <div class="navbar-header">
+                    <a class="navbar-brand" href="#">MijnNierInzhicht.nl</a>
+                </div>
+            
+                <ul class="nav navbar-nav">
+  			        <li><a href="index.html">Data Input</a></li>
+				    <li class="active"><a href="#">Measuring report</a></li>
+			    </ul>
+
+			    <ul class="nav nav-tabs navbar-right">
+ 			        <p class="navbar-text">Infomation Presentation:</p>
+				    <li class="active"><a data-toggle="tab" href="#guided">Guided</a></li>
+				    <li><a data-toggle="tab" href="#factual">Factual</a></li>
+			    </ul>
+			</div>
+		</nav>
+	</header>
+	
+	<div class="container-fluid">
+	    <div class="row">
+			<div class="tab-content">
+			    <!-- guided style starts -->
+                <div id="guided" class="tab-pane fade in active">
+	                <div class="col-md-10">
+				        <div id="guidedLearnMore" class="sidenav"><!--guided learn more-->
+                            <a href="javascript:void(0)" class="closebtn">&times;</a>
+							guidedLearnMore>
+                        </div>
+
+                        <!-- Use any element to open the sidenav -->
+                        <span class="openSide">open</span>
+
+                        <!-- Add all page content inside this div if you want the side nav to push page content to the right-->
+                        <div>
+						    <form id="dateForm" class="form-inline">
+  						        <div class="form-group">
+      						        <label for="startDate">From</label>
+          						    <input type="date" class="form-control" id="startDate" value="2017-07-29">
+        						</div>
+        						<div class="form-group">
+          						    <label for="endDate">to</label>
+          						    <input type="date" class="form-control" id="endDate" value="2017-08-05">
+        						</div>
+        						<button type="submit" class="btn btn-default" id="changeDate">Change period</button>
+      						</form> 
+							
+							<div class="tableBorder">
+						        <div class="tableContainer">
+							        <table class="table table-hover table-condensed" id="gTable">
+    					                <thead><tr id="gDate"></tr></thead>
+								        <tbody>
+								            <tr id="gBP" class="showM"></tr>
+									        <tr id="gPulse" class="showM"></tr>
+									        <tr id="gTemperature" class="showM"></tr>
+									        <tr id="gWeight" class="showM"></tr>
+									        <tr id="gCrea" class="showM active"></tr>
+								        </tbody>
+							        </table>
+								</div>
+							</div>
+							<div id="chart_div" class="responsive"></div>
+                        </div> 						
+				    </div>
+					<div class="col-md-2">
+			    to do>
+				tip of today>
+				avatar>
+			        </div>			        
+			    </div>
+				<!-- guided style ends, factual style starts -->
+				<div id="factual" class="tab-pane fade">
+			        <div class="col-md-10">
+				        <div id="factualLearnMore" class="sidenav"><!--guided learn more-->
+                            <a href="javascript:void(0)" class="closebtn">&times;</a>
+							factualLearnMore>
+                        </div>
+
+                        <!-- Use any element to open the sidenav -->
+                        <span class="openSide">open</span>
+
+                        <!-- Add all page content inside this div if you want the side nav to push page content to the right-->
+                                               <div>
+						    <form id="fDateForm" class="form-inline dataForm">
+  						        <div class="form-group">
+      						        <label for="fStartDate">From</label>
+          						    <input type="date" class="form-control startDate" id="fStartDate" value="2017-07-29">
+        						</div>
+        						<div class="form-group">
+          						    <label for="fEndDate">to</label>
+          						    <input type="date" class="form-control endDate" id="fEndDate" value="2017-08-05">
+        						</div>
+        						<button type="submit" class="btn btn-default changeDate" id="fChangeDate">Change period</button>
+      						</form> 
+							
+							<div class="tableBorder">
+						        <div class="tableContainer">
+							        <table class="table table-hover table-condensed" id="gTable">
+    					                <thead><tr id="gDate"></tr></thead>
+								        <tbody>
+								            <tr id="gBP" class="showM"></tr>
+									        <tr id="gPulse" class="showM"></tr>
+									        <tr id="gTemperature" class="showM"></tr>
+									        <tr id="gWeight" class="showM"></tr>
+									        <tr id="gCrea" class="showM active"></tr>
+								        </tbody>
+							        </table>
+								</div>
+							</div>
+							<div id="chart_div" class="responsive"></div>
+                        </div>  	
+			        </div>
+					<div class="col-md-2">
+			    to do>
+				tip of today>			
+			        </div>
+			        
+	            </div><!--factual style ends -->
+			</div><!--tab content ends -->
+	    </div>
+        <footer></footer>
+	</div>
+	
+
+</body>
+</html>
