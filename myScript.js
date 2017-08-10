@@ -45,77 +45,34 @@ var startDate, endDate;
 var msName = 'Crea';//measurement name, default: crea
 	
 $(document).ready(function() {	
-	records.forEach(formDate);
-	startDate = new Date("2017-07-29");
-    endDate = new Date("2017-08-05");
-	
-	$("#startDate").val("2017-07-29");
-	$("#endDate").val("2017-08-05");
-	
-	startIndex = findStart(startDate);
-	endIndex = findEnd(endDate);
-	
-	showTable();
-	
-	google.charts.load('current', {packages: ['corechart']});
-    google.charts.setOnLoadCallback(drawCreaChart);
+    initialization();
+		
+	$(window).resize(function(){
+	  	showChart();
+	});
 
-	
-    /*$("#dateForm").submit(function() {
-	    startDate = new Date($("#startDate").val());
-	    endDate = new Date($("#endDate").val());
-        if(startDate > endDate) {
-			alert('Please fill the end date later than the start date.');
-			startDate = new Date("2017-07-29");
-            endDate = new Date("2017-08-05");
-		}		
-		else {
-	        startIndex = findStart(startDate);
-	        endIndex = findEnd(endDate);
-            if(startIndex === undefined) {
-				alert('There is no data after 2017-08-05. Please fill in an ealier start date.')
-			}			
-			else if(endIndex === undefined){
-				alert('There is no data before 3-6-2017. Please fill in an later end date.')
-			}	
-			else if(endIndex < startIndex){
-				alert('Theis is no data in your selected period. Please extend it.')
-			}
-			else{
-		        showTable();
-			    showChart();		    
-			}
-		}
-		$("#changeDate").blur();
-		$("#startDate").blur();
-		$("#endDate").blur();
+	$("#gDateForm").submit(function(){
+		startDate = new Date($("#gStartDate").val());
+	    endDate = new Date($("#gEndDate").val());
+		changeDate();
+		
+		$("#fStartDate").val($("#gStartDate").val());
+	    $("#fEndDate").val($("#gEndDate").val());
+		
+		$(".changeDate").blur();
+		$(".startDate").blur();
+		$(".endDate").blur();
 		return false;
-	});*/
-	$(".dateForm").submit(function() {
-	    startDate = new Date($(this).find(".startDate").val());
-	    endDate = new Date($(this).find(".endDate").val());
-        if(startDate > endDate) {
-			alert('Please fill the end date later than the start date.');
-			startDate = new Date("2017-07-29");
-            endDate = new Date("2017-08-05");
-		}		
-		else {
-	        startIndex = findStart(startDate);
-	        endIndex = findEnd(endDate);
-            if(startIndex === undefined) {
-				alert('There is no data after 2017-08-05. Please fill in an ealier start date.')
-			}			
-			else if(endIndex === undefined){
-				alert('There is no data before 3-6-2017. Please fill in an later end date.')
-			}	
-			else if(endIndex < startIndex){
-				alert('Theis is no data in your selected period. Please extend it.')
-			}
-			else{
-		        showTable();
-			    showChart();		    
-			}
-		}
+	});
+	
+	$("#fDateForm").submit(function(){
+		startDate = new Date($("#fStartDate").val());
+	    endDate = new Date($("#fEndDate").val());
+		changeDate();
+		
+		$("#gStartDate").val($("#fStartDate").val());
+	    $("#gEndDate").val($("#fEndDate").val());
+		
 		$(".changeDate").blur();
 		$(".startDate").blur();
 		$(".endDate").blur();
@@ -125,13 +82,14 @@ $(document).ready(function() {
 	$(".showM").click(function(){
 		$(this).parent().children(".active").removeClass("active");
 		$(this).addClass("active");
-		msName = $(this).attr("id").replace('g','');
+		msName = $(this).attr("id").slice(1);
 		showChart();
 	});
 	
 	$(".openSide").click(function(){
-		this.previousElementSibling.style.width = "250px";
-		this.nextElementSibling.style.marginRight = "250px";
+		//this.previousElementSibling.style.width = "250px";
+		//this.nextElementSibling.style.marginRight = "250px";
+		$("#guidedRpt").removeClass("col-md-10").addClass("col-md-7");
 	});
 	
     $(".closebtn").click(function() {
@@ -139,6 +97,23 @@ $(document).ready(function() {
 		this.parentNode.nextElementSibling.nextElementSibling.style.marginRight = "0";
     });
 });
+
+function initialization() {
+	records.forEach(formDate);
+	startDate = new Date("2017-07-29");
+    endDate = new Date("2017-08-05");
+	
+	$(".startDate").val("2017-07-29");
+	$(".endDate").val("2017-08-05");
+	
+	startIndex = findStart(startDate);
+	endIndex = findEnd(endDate);
+	
+	showTable();
+	
+	google.charts.load('current', {packages: ['corechart']});
+    google.charts.setOnLoadCallback(drawCreaChart);
+}
 
 function formDate(record) {
 	var shortDate = record[1];
@@ -170,6 +145,31 @@ function findEnd(endDate) {
 	return undefined;
 }
 
+function changeDate() {
+        if(startDate > endDate) {
+			alert('Please fill the end date later than the start date.');
+			startDate = new Date("2017-07-29");
+            endDate = new Date("2017-08-05");
+		}		
+		else {
+	        startIndex = findStart(startDate);
+	        endIndex = findEnd(endDate);
+            if(startIndex === undefined) {
+				alert('There is no data after 2017-08-05. Please fill in an ealier start date.')
+			}			
+			else if(endIndex === undefined){
+				alert('There is no data before 3-6-2017. Please fill in an later end date.')
+			}	
+			else if(endIndex < startIndex){
+				alert('Theis is no data in your selected period. Please extend it.')
+			}
+			else{
+		        showTable();
+			    showChart();		    
+			}
+		}
+	}
+	
 function showTable() {	
     var i;
 	var dateHTML = "<th class=\"headcol\">Date</th>"; 
@@ -229,9 +229,8 @@ function showChart() {
 	}
 }
 function drawCreaChart(){
-	//var data; //= new google.visualization.DataTable();
 	var creaData = []; 
-	var chartEndIndex; // = endIndex - startIndex + 2;
+	var chartEndIndex; 
 	var chartEndDate;
 	var i, j, k, minCrea = 500, maxCrea = 0, crea;
 	creaData[0] = [];
@@ -318,23 +317,28 @@ function drawCreaChart(){
 				pointShape: 'square'
 			}
 		},
-		colors: ['#FFE4E4', '#ffeccb', '#E4FFE4', '#cbffcb', '#888'],//'#3366CC'],
+		colors: ['#FFE4E4', '#ffeccb', '#E4FFE4', '#cbffcb', '#888'],
 		areaOpacity: 1,
 		legend: {position: 'top'},
+		chartArea: {
+            backgroundColor: {
+                stroke: '#ccc',
+                strokeWidth: 1
+            }
+        },
 		hAxis: {
-			gridlines: {color: 'transparent'},
-			baselineColor: '#ccc'
+			gridlines: {color: 'transparent'}
 		},
 		vAxis: {
-			baseline: yMin,
 			gridlines: {color: 'transparent'},
-			ticks: yTick,
-			baselineColor: '#ccc'
+			ticks: yTick
 		}
     };
 
-	var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
-    chart.draw(data, options);
+	var gChart = new google.visualization.ComboChart(document.getElementById('gChart_div'));
+    gChart.draw(data, options);
+	var fChart = new google.visualization.ComboChart(document.getElementById('fChart_div'));
+    fChart.draw(data, options);
 }
 
 function drawBPChart(){
@@ -377,9 +381,10 @@ function drawBPChart(){
 		}
     };
 
-	var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-    chart.draw(data, options);
-}
+	var gChart = new google.visualization.LineChart(document.getElementById('gChart_div'));
+    gChart.draw(data, options);
+	var fChart = new google.visualization.LineChart(document.getElementById('fChart_div'));
+    fChart.draw(data, options);}
 
 function drawGeneralChart(msIndex){
 	var msData = [];
@@ -419,6 +424,7 @@ function drawGeneralChart(msIndex){
 		}
     };
 
-	var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-    chart.draw(data, options);
-}
+	var gChart = new google.visualization.LineChart(document.getElementById('gChart_div'));
+    gChart.draw(data, options);
+	var fChart = new google.visualization.LineChart(document.getElementById('fChart_div'));
+    fChart.draw(data, options);}
