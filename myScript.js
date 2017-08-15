@@ -42,7 +42,7 @@ var records = [[,"3-6-2017",104,138,90," ",36,84," "," "," "," "," "," "," ",], 
 var recordsL = records.length - 1;
 var startIndex, endIndex;		
 var startDate, endDate;
-var msName = 'Crea';//measurement name, default: crea
+var msName = 'crea';//measurement name, default: crea
 	
 $(document).ready(function() {	
     initialization();
@@ -50,52 +50,102 @@ $(document).ready(function() {
 	$(window).resize(function(){
 	  	showChart();
 	});
+	
+	/*$(".dsBtn").click(function(){
+		$(".dsBtn").removeClass("active");
+		$(this).addClass("active");
+		$(this).blur();
+		
+		switch($(this).attr("id")){
+			case "ds3Btn":
+			case "ds2Btn":
+			case "ds1Btn":
+			default:
+		}
+	});*/
 
-	$("#gDateForm").submit(function(){
-		startDate = new Date($("#gStartDate").val());
-	    endDate = new Date($("#gEndDate").val());
-		changeDate();
+	$("#dateForm").submit(function(){
+		startDate = new Date($("#startDate").val());
+	    endDate = new Date($("#endDate").val());
+		changeDate();		
 		
-		$("#fStartDate").val($("#gStartDate").val());
-	    $("#fEndDate").val($("#gEndDate").val());
-		
-		$(".changeDate").blur();
-		$(".startDate").blur();
-		$(".endDate").blur();
+		$("#changeDate").blur();
+		$("#startDate").blur();
+		$("#endDate").blur();
 		return false;
 	});
 	
-	$("#fDateForm").submit(function(){
-		startDate = new Date($("#fStartDate").val());
-	    endDate = new Date($("#fEndDate").val());
-		changeDate();
-		
-		$("#gStartDate").val($("#fStartDate").val());
-	    $("#gEndDate").val($("#fEndDate").val());
-		
-		$(".changeDate").blur();
-		$(".startDate").blur();
-		$(".endDate").blur();
-		return false;
-	});
-	
-	$(".showM").click(function(){
+	$(".showM").click(function(){//show chart of different measurements
 		$(this).parent().children(".active").removeClass("active");
 		$(this).addClass("active");
-		msName = $(this).attr("id").slice(1);
+		msName = $(this).attr("id");
 		showChart();
 	});
 	
-	$(".openSide").click(function(){
-		//this.previousElementSibling.style.width = "250px";
-		//this.nextElementSibling.style.marginRight = "250px";
-		$("#guidedRpt").removeClass("col-md-10").addClass("col-md-7");
+	$("#openMsg").click(function(){
+		$(".popup").css("display", "block");
+		$("#lights").css("display", "none");
+		$("#lights").removeClass("col-sm-2");
+		$("#chartWrapper").removeClass("col-sm-10").addClass("col-sm-12");
+		showChart();
 	});
 	
-    $(".closebtn").click(function() {
-	    this.parentNode.style.width = "0";
-		this.parentNode.nextElementSibling.nextElementSibling.style.marginRight = "0";
+	$(".closeMsg").click(function(){
+		$(".popup").css("display", "none");
+		$("#lights").css("display", "block");
+		$("#lights").addClass("col-sm-2");
+		$("#chartWrapper").removeClass("col-sm-12").addClass("col-sm-10");
+		showChart();
+	});
+	
+	$(".openCol").click(function(){
+		var sideColMsgW;
+		var sideColH = Math.min($("#report").height(), $("window").height());
+		
+		$("#report").removeClass("col-md-10").addClass("col-md-7");
+		$(".sideCol").css("display", "block");
+		$(".sideCol").addClass("col-md-3");
+		
+		sideColMsgW = $(".sideCol").width() - 30;
+		$(".sideCol").height(sideColH);
+		$(".sideCol").children(".msg").css("max-height", sideColH);		
+		$(".sideCol").children(".msg").width(sideColMsgW);
+		if($(window).width() >= 992){
+			$(".popup").css("left", "30%");
+		}
+		$(".openCol").blur();
+		showChart();
+	});
+	
+    $(".closeCol").click(function() {
+		$("#report").removeClass("col-md-7").addClass("col-md-10");
+		$(".sideCol").css("display", "none");
+		$(".sideCol").removeClass("col-md-3");
+		$(".popup").css("left", "50%");
+		showChart();
     });
+	
+	$("#gToFLearnMore").click(function(){
+		$("#gLMtxt").css("display", "none");
+		$("#fInfo").css("display", "block");
+	});
+	
+	$("#backToGLearnMore").click(function(){
+		$("#gLMtxt").css("display", "block");
+		$("#fInfo").css("display", "none");
+	});
+	
+	// Add a "checked" symbol when clicking on a list item
+    var list = document.querySelector('ul.toDo');
+    list.addEventListener('click', function(ev) {
+        if (ev.target.tagName === 'LI') {
+            ev.target.classList.toggle('checked');
+        }
+		else if(ev.target.tagName === 'B') {
+			ev.target.parentElement.classList.toggle('checked');
+		}
+    }, false);
+
 });
 
 function initialization() {
@@ -103,8 +153,8 @@ function initialization() {
 	startDate = new Date("2017-07-29");
     endDate = new Date("2017-08-05");
 	
-	$(".startDate").val("2017-07-29");
-	$(".endDate").val("2017-08-05");
+	$("#startDate").val("2017-07-29");
+	$("#endDate").val("2017-08-05");
 	
 	startIndex = findStart(startDate);
 	endIndex = findEnd(endDate);
@@ -187,36 +237,36 @@ function showTable() {
 		weightHTML += "<td>" + records[i][7] + "</td>";
 		creaHTML += "<td>" + records[i][2] + "</td>";
 	}
-	$(".date").empty().append(dateHTML);
-	$(".bp").empty().append(bpHTML);
-	$(".pulse").empty().append(pulseHTML);
-	$(".temperature").empty().append(tempHTML);
-	$(".weight").empty().append(weightHTML);
-	$(".crea").empty().append(creaHTML);
+	$("#date").empty().append(dateHTML);
+	$("#bp").empty().append(bpHTML);
+	$("#pulse").empty().append(pulseHTML);
+	$("#temperature").empty().append(tempHTML);
+	$("#weight").empty().append(weightHTML);
+	$("#crea").empty().append(creaHTML);
 }
 
 function showChart() {
 	switch (msName){
-		case 'BP': google.charts.setOnLoadCallback(drawBPChart); break;
-		case 'Pulse':
+		case 'bp': google.charts.setOnLoadCallback(drawBPChart); break;
+		case 'pulse':
             google.charts.setOnLoadCallback(function() {
                 drawGeneralChart(5);
 			});
 			break;
 
-		case 'Temperature':
+		case 'temperature':
  		    google.charts.setOnLoadCallback(function() {
 				drawGeneralChart(6);
             });
             break;
 
-		case 'Weight':
+		case 'weight':
      		google.charts.setOnLoadCallback(function() {
 				drawGeneralChart(7);
 			});
 			break;
 			
-		case 'Crea':
+		case 'crea':
 		default:
     		if(records[endIndex][9] != " ") {//the crea datum has a color
     			google.charts.setOnLoadCallback(drawCreaChart);
@@ -259,7 +309,7 @@ function drawCreaChart(){
 			if(maxCrea < crea || maxCrea < records[i][12]) {
 				maxCrea = Math.max(crea, records[i][12]);
 			}	
-			j++
+			j++;
 		}
 	}
 	
@@ -310,7 +360,7 @@ function drawCreaChart(){
 	var options = {
         seriesType: 'area',
         series: {
-			1: {enableInteractivity: false, tooltip: 'none'},
+			//1: {enableInteractivity: false, tooltip: 'none'},
 			4: {
 				type: 'line',
 				pointSize: 10,
@@ -326,19 +376,15 @@ function drawCreaChart(){
                 strokeWidth: 1
             }
         },
-		hAxis: {
-			gridlines: {color: 'transparent'}
-		},
+		hAxis: {gridlines: {color: 'transparent'}},
 		vAxis: {
 			gridlines: {color: 'transparent'},
 			ticks: yTick
 		}
     };
 
-	var gChart = new google.visualization.ComboChart(document.getElementById('gChart_div'));
+	var gChart = new google.visualization.ComboChart(document.getElementById('chart_div'));
     gChart.draw(data, options);
-	var fChart = new google.visualization.ComboChart(document.getElementById('fChart_div'));
-    fChart.draw(data, options);
 }
 
 function drawBPChart(){
@@ -359,7 +405,7 @@ function drawBPChart(){
 			}
 			bpData[j] = [];
 			bpData[j] = [records[i][0], bpHi, bpLo];
-			j++
+			j++;
 		}
 	}
 	var data = google.visualization.arrayToDataTable(bpData);
@@ -373,18 +419,13 @@ function drawBPChart(){
                 strokeWidth: 1
             }
         },
-		hAxis: {
-			gridlines: {color: 'transparent'}
-		},
-		vAxis: {
-			gridlines: {color: 'transparent'}
-		}
+		hAxis: {gridlines: {color: 'transparent'}},
+		vAxis: {gridlines: {color: 'transparent'}}
     };
 
-	var gChart = new google.visualization.LineChart(document.getElementById('gChart_div'));
+	var gChart = new google.visualization.LineChart(document.getElementById('chart_div'));
     gChart.draw(data, options);
-	var fChart = new google.visualization.LineChart(document.getElementById('fChart_div'));
-    fChart.draw(data, options);}
+}
 
 function drawGeneralChart(msIndex){
 	var msData = [];
@@ -402,7 +443,7 @@ function drawGeneralChart(msIndex){
 		if(ms !== " ") {
 			msData[j] = [];
 			msData[j] = [records[i][0], ms];
-			j++
+			j++;
 		}
 	}
 	var data = google.visualization.arrayToDataTable(msData);
@@ -416,15 +457,10 @@ function drawGeneralChart(msIndex){
                 strokeWidth: 1
             }
         },
-		hAxis: {
-			gridlines: {color: 'transparent'}
-		},
-		vAxis: {
-			gridlines: {color: 'transparent'}
-		}
+		hAxis: {gridlines: {color: 'transparent'}},
+		vAxis: {gridlines: {color: 'transparent'}}
     };
 
-	var gChart = new google.visualization.LineChart(document.getElementById('gChart_div'));
+	var gChart = new google.visualization.LineChart(document.getElementById('chart_div'));
     gChart.draw(data, options);
-	var fChart = new google.visualization.LineChart(document.getElementById('fChart_div'));
-    fChart.draw(data, options);}
+}
