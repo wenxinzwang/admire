@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="myStyle.css">
+	
+    <style>
+        #content{
+    		padding: 15px;
+		}
+
+		th[colspan="2"]{
+    		text-align: center;
+		}
+
+		@media screen and (min-width: 992px){
+    		#content{
+    			width: 75%;
+				margin: auto;
+			}
+		}
+    </style>
+    <body>    
+	    <header>
+		    <nav class="navbar navbar-default">
+		        <div class="container-fluid">
+			        <div class="navbar-header">
+                        <a class="navbar-brand" href="index.html">MijnNierInzhicht.nl</a>
+                    </div>
+            
+                    <ul class="nav navbar-nav">
+  			            <li><a href="index.html">Measuring report</a></li>
+					    <li class="active"><a href="#">Algorithm</a></li>
+			        </ul>
+			    </div>
+		    </nav>
+	    </header>
+		
+	    <div id="content">
+            <h1>Creatinine Algorithm</h1>
+            <h2>Introduction</h2>
+            <p>There are 3 steps:</p>
+            <ol>
+	            <li><a href="#step1">Calculate the measurement zone of the current measurement</a></li>
+	            <li><a href="#step2">Calculate the creatinine status of the day depending on the 1 or 2 measurements of the day</a></li>
+	            <li><a href="#step3">Calculate the recommendation depending on the creatinine status of the last two consecutive measuring days</a></li>
+            </ol>
+
+			<h2 id="step1">1. Measurement zones</h2>
+            <p>The boundaries of measurement zones depend on the 5 previous measurements (5PM). 
+			First the mean (M) and the standard deviation (SD) of 5PM need to be calculated:</p>
+            <ul>
+                <li>M = (sum of 5PM)/5
+				</li>
+                <li>SD = √[(1st of 5PM - M)^2 + (2nd of 5PM - M)^2+ ... + (last of 5PM - M)^2]/5</li>
+            </ul>
+<p>And the boundaries of the zones are as followed:</p>
+<table class="table table-hover table-condensed">
+<thead class="thead-inverse"><th>Zone</th><th>Lower boundary</th><th>Upper boundary</th></th>
+<tbody>
+<tr><td>safe</td><td>0</td><td>M</td></tr>
+<tr><td>reasonably<safe/td><td>M</td><td>the larger one of M+SD and 1.15*M</td></tr>
+<tr><td>mild concern</td><td>the larger one of M+SD and 1.15*M</td><td>the larger one of M+1.5*SD and 1.25*M</td></tr>
+<tr><td>concern</td><td>the larger one of M+1.5*SD and 1.25*M</td><td>None</td></tr>
+</tbody>
+</table>
+
+<h2 id="step2">2. Creatinine status table</h2>
+<p>When a measurement is made that falls into mild concern or concern zone, the system will ask you to do a second measurement. This will help to improve the accuracy of measurement. The system uses both measurements to determine the creatinine status for that day. For example, if your first measurement felt in the mild concern zone and your second measurement felt in the safe zone. As can be seen in the table below, in the blue highlighted row, this would result in a creatinine status of safe.</p>
+
+<table class="table table-hover table-condensed">
+<thead class="thead-inverse"><th colspan="2">Measurement</th><th>Status</th></thead>
+<thead><th>1st</th><th>2nd</th><th> </th></thead>
+<tbody>
+<tr><td>Safe</td><td>Not applicable</td><td>Safe</td></tr>
+<tr><td>Reasonably safe</td><td>Not applicable</td><td>Reasonably safe</td></tr>
+<tr class="info"><td>Mild concern</td><td>Safe</td><td>Safe</td></tr>
+<tr><td>Mild concern</td><td>Reasonably safe</td><td>Reasonably safe</td></tr>
+<tr><td>Mild concern</td><td>Mild concern</td><td>Mild concern</td></tr>
+<tr><td>Mild concern</td><td>Concern</td><td>Concern</td></tr>
+<tr><td>Concern</td><td>Safe</td><td>Reasonably safe</td></tr>
+<tr><td>Concern</td><td>Reasonably safe</td><td>Mild concern</td></tr>
+<tr><td>Concern</td><td>(Mild) concern</td><td>Concern</td></tr>
+</tbody>
+</table>
+<h2 id="step3">3. Recommendation table</h2>
+<p>The system uses the table below to determine what recommendation it gives. For this, it uses the creatinine status of two consecutive measuring days. For example, day 1 your creatinine status was mild concern and day 2 reasonably safe. Looking at the table in the blue highlighted row, you can see that for this status combination the recommended action is to measure tomorrow.</p>
+<table class="table table-hover table-condensed">
+<thead class="thead-inverse"><th colspan="2">Creatinine status</th><th>Action</th></thead>
+<thead><th>Day 1</th><th>Day 2</th><th> </th></thead>
+<tbody>
+<tr><td>(Reasonably) safe</td><td>(Reasonably) safe</td><td>nothing extra</td></tr>
+<tr><td>(Reasonably) safe</td><td>Mild concern</td><td>measure tomorrow</td></tr>
+<tr><td>(Reasonably) safe</td><td>Concern</td><td>contact hospital</td></tr>
+<tr><td>Mild concern</td><td>Safe</td><td>nothing extra</td></tr>
+<tr class="info">><td>Mild concern</td><td>Reasonably safe</td><td>measure tomorrow</td></tr>
+<tr><td>Mild concern</td><td>(Mild) concern</td><td>contact hospital</td></tr>
+<tr><td>Concern</td><td>Any</td><td>Follow doctor’s advice</td></tr>
+</tbody>
+</table>
+</div>
+</body>
+</html>
