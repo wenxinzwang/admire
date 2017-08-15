@@ -2,15 +2,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
- <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-<!-- Latest compiled JavaScript -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script><!-- jQuery library -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+<script src="https://www.gstatic.com/charts/loader.js"></script><!-- Google Chart -->
+
 <script src="myScript.js"></script>
 <link rel="stylesheet" href="myStyle.css">
 <body>    
@@ -18,24 +14,193 @@
 		<nav class="navbar navbar-default">
 		    <div class="container-fluid">
 			    <div class="navbar-header">
-                    <a class="navbar-brand" href="report.html">MijnNierInzhicht.nl</a>
+                    <a class="navbar-brand" href="#">MijnNierInzhicht.nl</a>
                 </div>
             
                 <ul class="nav navbar-nav">
-  			        <li class="active"><a href="#">Data Input</a></li>
-				    <li><a href="report.html">Measuring report</a></li>
+  			        <li class="active"><a href="#">Measuring report</a></li>
+					<li><a href="algorithm.html">Algorithm</a></li>
+			    </ul>
+				<!--
+				<p class="navbar-text">Try dataset:</p>
+				<div class="btn-group">
+				    <button id="ds1Btn" class="dsBtn btn navbar-btn btn-default active">1</button>
+				    <button id="ds2Btn" class="dsBtn btn navbar-btn btn-default">2</button>
+				    <button id="ds3Btn" class="dsBtn btn navbar-btn btn-default">3</button>
+				</div>
+-->
+			    <ul class="nav nav-tabs navbar-right">
+ 			        <p class="navbar-text">Infomation Presentation:</p>
+				    <li class="active"><a data-toggle="tab" href="#guided">Guided</a></li>
+				    <li><a data-toggle="tab" href="#factual">Factual</a></li>
 			    </ul>
 			</div>
 		</nav>
 	</header>
-	
+						
 	<div class="container-fluid">
 	    <div class="row">
+		
+		    <div id="report" class="col-md-10 ">   
+			    <div class="section">
+					<form id="dateForm" class="form-inline">
+  				    	<div class="form-group">
+      			        	<label for="startDate">From</label>
+          			    	<input type="date" class="form-control" id="startDate" value="2017-07-29">
+        				</div>
+        				<div class="form-group">
+          			    	<label for="endDate">to</label>
+          			    	<input type="date" class="form-control" id="endDate" value="2017-08-05">
+        				</div>
+        				<button type="submit" class="btn btn-default" id="changeDate">Change period</button>
+      				</form> 
+							
+					<div class="tableBorder">
+				   		<div class="tableContainer">
+				        	<table class="table table-hover table-condensed" id="table">
+    			            	<thead><tr id="date" class="date"></tr></thead>
+					        	<tbody>
+					            	<tr id="bp" class="showM bp"></tr>
+						        	<tr id="pulse" class="showM pulse"></tr>
+						        	<tr id="temperature" class="showM temperature"></tr>
+						        	<tr id="weight" class="showM weight"></tr>
+						        	<tr id="crea" class="showM active crea"></tr>
+					        	</tbody>
+				        	</table>
+						</div>
+					</div>
+					
+					<div class="row">	
+				    	<div id="chartWrapper" class="col-sm-12"><div id="chart_div"></div></div>
+					
+						<div id="lights" class="col-sm-2">
+					    	<p><img class="responsive" src="img/trafficlights-red.png"></p>
+					    	<button id="openMsg" class="btn btn-default">Open<br>Message</button>
+						</div>
+					</div>
+				</div>
+		    </div>
+			
+			<div class="tab-content">
+			    <!-- guided style starts -->
+                <div id="guided" class="tab-pane fade in active">
+				
+				    <!-- The Message -->
+					<div id="gPopup" class="popup">
+					    <div class="msg">
+					    	<div id="gPopupContent" class="msgContent">
+								<p>
+						    		<img class="responsive" src="img/trafficlights-red.png">
+						    		Your creatinine status of today is concern. Contact the hospital. Tel: 0123456789.
+									<span class="link openCol">Learn More</span>
+								</p>
+								<p class="smallFont">(You can open this message again later)</p>
+								<p class="text-center">
+                                    <button class="btn btn-default btn-lg closeMsg text-center">OK</button>
+                                </p>
+							</div>
+						</div>
+					</div>
+	                
+					<div id="guidedLearnMore" class="sideCol"><!--guided learn more-->
+					    <div class="msg">
+    					    <div class="msgContent">
+    							<button type="button" class="btn btn-default closeCol">&times;</button>
+								<h3>Contact the Hospital</h3>								
+								<div id="gLMtxt">
+								    <p>It does not necessarily mean that there is something wrong. 
+								        But to make sure, you are strongly advised to contact the hospital
+                                        to discuss this with your doctor.
+								        <span id="gToFLearnMore" class="link">Factual information</span>
+								    </p>
+								</div>
+								<div id="fInfo">
+								    <ul>
+    									<li>Yesterday creatinine status: safe (green)</li>
+										<ul>
+    										<li>Upper boundary safe zone: 108</li>
+											<li>creatinine level: 103 (green)</li>
+										</ul>
+										<li>Today creatinine status: concern (red)</li>
+    										<ul>
+    											<li>lower boundary concern zone: 118</li>
+												<li>Boundary range of the mild concern zone: 110 - 118</li>
+												<li>creatinine levels: 139 (red) and 116 (orange)</li>
+											</ul>
+										</ul>
+										<p>To learn more about the calculation of the boundaries of the zones
+                                            and the recommended actions 
+    										<a href="algorithm.html" target="_blank">click here</a>.
+										</p>
+										<p><span id='backToGLearnMore' class='link'>back</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-md-2 ">
+					    <div class="section">
+			            	<h3>To Do List</h3>
+			            	<ul class="toDo">
+  			                	<li><b>Today</b><br>Contact the hospital</li>
+    			            	<li><b>Next measurement</b><br>tomorrow</li>
+  			            	</ul>
+				        	<!--tip of today-->
+				        	<img class="img-responsive" src="img/virtualagent-red.png"/>
+						</div>
+			        </div>			        
+			    </div>
+				<!-- guided style ends, factual style starts -->
+				<div id="factual" class="tab-pane fade">
+					<div id="fPopup" class="popup">
+					    <p>
+						    <img class="responsive" src="img/trafficlights-red.png">
+						    Your creatinine status of today is concern. Contact the hospital. Tel: 0123456789.
+							<span class="link openCol">Learn More</span>
+						</p>
+						<p class="smallFont">(You can open this message again later)</p>
+						<p class="text-center"><button class="btn btn-default btn-lg closeMsg text-center">OK</button></p>
+					</div>
+					
+				    <div id="factualLearnMore" class="sideCol "><!--guided learn more-->
+					    <div class="section">
+                        	<h3>Contact the Hospital</h3>
+							<button type="button" class="btn btn-default closeCol">&times;</button>
+							<ul>
+						    	<li>Yesterday creatinine status: safe (green)</li>
+								<ul>
+							    	<li>Upper boundary safe zone: 108</li>
+									<li>creatinine level: 103 (green)</li>
+								</ul>
+								<li>Today creatinine status: concern (red)</li>
+								<ul>
+							    	<li>lower boundary concern zone: 118</li>
+									<li>Boundary range of the mild concern zone: 110 - 118</li>
+									<li>creatinine levels: 139 (red) and 116 (orange)</li>
+								</ul>
+							</ul>
+							<p>To learn more about the calculation of the boundaries of the zones and the recommended actions 
+						    	<a href="algorithm.html" target="_blank">click here</a>.
+							</p>
+						</div>
+                    </div>
+			        
+					<div class="col-md-2 ">
+					    <div class="section">
+					    	<h3>To Do List</h3>
+			            	<ul class="toDo">
+  			                	<li><b>Today</b><br>Contact the hospital</li>
+    			            	<li><b>Next measurement</b><br>tomorrow</li>
+  			            	</ul>	
+				        </div>
+						<!--tip of today-->	
+			        </div>
+	            </div><!--factual style ends -->
+			</div><!--tab content ends -->
 	    </div>
-        <footer></footer>
 	</div>
 	
-
+    <footer>by Wenxin Wang</footer>
 
 </body>
 </html>
