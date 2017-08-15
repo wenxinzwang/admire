@@ -14,11 +14,138 @@ body {
 	margin-top: 4px;
 }
 
+.section {
+	border: 1px solid #ccc;
+	padding: 10px;
+	border-radius: 3px;
+}
+
+.popup {	
+	width: 400px;
+	max-width: 100%;
+	position: fixed;
+	top: 10%;
+	left: 50%;
+    margin-left: -200px; /* Negative half of width. */
+	z-index: 1;
+	background-color: white;
+	font-size: larger;
+	border-radius: 4px;
+}
+
+.popup img {
+	float: left;
+	margin: 0 10px 0 0;
+}
+
+#gPopupContent {
+	height: 250px;
+}
+
+#fPopup {
+	border: 2px solid #888;
+	padding: 15px;
+}
+
+.popup .smallFont {
+	font-size: small;
+}
+
+.closeMsg {
+	margin-top: 30px;
+}
+
+.msg {
+	border-radius: 15px;
+	border: 5px solid #888;	
+	background-color: white;	
+}
+
+.msg::after {
+    content: " ";
+    position: absolute;
+    left: 100%; 
+    top: 110px;
+	margin-left: -5px;
+    border-width: 30px;
+    border-style: solid;
+    border-color: transparent transparent transparent #888;
+}
+.msgContent {
+	padding: 15px;	
+}
+.msgContent::after {
+    content: " ";
+    position: absolute;
+	z-index: 1;
+    left: 100%; 
+    top: 117px;
+    margin-left: -5px;
+    border-width: 23px;
+    border-style: solid;
+    border-color: transparent transparent transparent white;
+}
+
+#guidedLearnMore{
+	padding: 0;
+}
+
+#guidedLearnMore .msg{
+	top: 0;
+	overflow-x: hidden; 
+}
+
+#guidedLearnMore .msg::after,
+#guidedLearnMore .msgContent::after{
+	margin-left: -25px;
+}
+
+#guidedLearnMore h3{
+	margin-top: 0px;
+}
+
+.sideCol {
+	display:none;
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sideCol */
+}
+
+/* Position and style the close button (top right corner) */
+.closeCol {
+    position: absolute;
+    top: 5px;
+    right: 20px;
+    display: inline-block;
+    transition: 0.3s;
+	border: none;
+}
+
+#guidedLearnMore .closeCol {
+	top: 15px;
+	right: 60px;
+}
+
+.sideCol ul{
+	padding: 0 0 0 15px;
+}
+
+#fInfo{
+	display: none;
+}
+
+span.link{
+	text-decoration: underline;
+	cursor: pointer;
+	color: #337ab7;
+}
+span.link:hover, span.link:focus{
+	color: #23527c;
+}
+
 .form-inline {
 	margin-bottom: 10px;
 }
 
-.tableContainer {/*div outTable*/
+.tableContainer {
 	overflow:auto; 
 	margin-left:180px;
 	margin-bottom:0px;
@@ -28,69 +155,90 @@ body {
 .table {
 	margin: 0px;
 }
+
 .headcol {
 	width: 180px;
 	min-width: 180px;
 	position:absolute;
-	left:15px;	
+	left:26px;	
 }
 
-td {
+#report tr {
+	cursor: pointer;
+}
+
+#report td {
 	min-width: 80px;
 }
+
 .tableBorder {
 	border-top: 2px solid #ddd;
 }
-#gCrea td{
+.crea td{
 	border-bottom: 2px solid #ddd;
 }
- /* The side navigation menu */
-.sidenav {
-    height: 100%;  /*100% Full-height */
-    width: 0; /* 0 width - change this with JavaScript */
-    /*position: fixed;  Stay in place */
-	position: absolute;
-    z-index: 1;  /*Stay on top */
-    top: 0;
-    right: 0;
-    background-color: #111; /* Black*/
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
-    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
-}
 
-/* The navigation menu links */
-.sidenav a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s
-}
-
-/* When you mouse over the navigation links, change their color */
-.sidenav a:hover, .offcanvas a:focus{
-    color: #f1f1f1;
-}
-
-/* Position and style the close button (top right corner) */
-.sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-}
-
-/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
-#guidedRpt, #factualRpt {
+/* push the report to the left when open the side LearnMore column */
+#report {
     transition: margin-left .5s;
-    padding: 20px;
 }
 
-/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-@media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
+#chart_div {
+	width: 100%;
+}
+
+#lights {
+	padding-top: 15px;
+	display: none;
+	text-align: center;
+}
+
+/* Style the to do list items */
+ul.toDo {
+    margin: 0;
+    padding: 0;
+	list-style-type: none;
+}
+
+ul.toDo li {
+    cursor: pointer;
+    transition: 0.2s;
+
+    /* make the list items unselectable */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+ul.toDo li:hover {
+    background: #eee;
+}
+
+ul.toDo li.checked {
+    text-decoration: line-through;
+}
+
+footer{
+	text-align: center;
+	background-color: #eee;
+	margin-top: 10px;
+	padding: 10px;
+}
+/*@media screen and (max-width: 450px) {
+	.popup {
+		width: 260px;
+		right: 0;
+	}
+	.msg {
+		
+		height: 300px;
+	}
+}*/
+@media screen and (max-width: 992px) {
+	.section {
+		margin: 10px 0;
+	}
+} 
+@media screen and (min-height: 450px) {
+	#chart_div {height: 290px;}
 } 
