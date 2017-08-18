@@ -224,6 +224,14 @@ footer{
 	margin-top: 10px;
 	padding: 10px;
 }
+
+footer a{
+	color: #333333;
+}
+footer a:hover{
+	color: #333333;
+	text-decoration: none;
+}
 /*@media screen and (max-width: 450px) {
 	.popup {
 		width: 260px;
